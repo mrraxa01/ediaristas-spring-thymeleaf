@@ -20,6 +20,12 @@ public class ServicoController {
     @Autowired
     private ServicoRepository repository;
 
+    @GetMapping
+    public ModelAndView buscarTodos(){
+        return new ModelAndView("admin/servico/listar")
+        .addObject("servicos", repository.findAll());
+    }
+
     @GetMapping("/cadastrar")
     public ModelAndView cadastrar(){
 
@@ -31,7 +37,7 @@ public class ServicoController {
     @PostMapping("/cadastrar")
     public String cadastrar(Servico servico){
         repository.save(servico);
-        return "redirect:/admin/servicos/cadastrar";
+        return "redirect:/admin/servicos";
     }
 
     @ModelAttribute("icones")
