@@ -145,7 +145,7 @@
                                     <div class="form-group">
                                         <label for="icone">Icone</label>
                                         <select class="form-control" th:field="*{icone}">
-                                            <option th:each="icone : ${icones}" th:text="${icone.nome}" th:value="icone"></option>
+                                            <option th:each="icone : ${icones}" th:text="${icone.nome}" th:value="${icone}"></option>
 
                                         </select>
                                     </div>
