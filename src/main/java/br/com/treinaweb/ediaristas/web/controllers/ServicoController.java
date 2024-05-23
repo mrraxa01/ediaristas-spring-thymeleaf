@@ -41,6 +41,22 @@ public class ServicoController {
         return "redirect:/admin/servicos";
     }
 
+    @GetMapping("/{id}/editar")
+    public ModelAndView editar(@PathVariable Long id){
+        System.out.println(id);
+        var servico = repository.getReferenceById(id);
+        System.out.println(servico.getNome());
+        return new ModelAndView("/admin/servico/form")
+        .addObject("servico", repository.getReferenceById(id));
+       
+    }
+
+    @PostMapping("/{id}/editar")
+    public String editar(@PathVariable Long id, Servico servico){
+        repository.save(servico);
+        return "redirect:/admin/servicos";
+    }
+
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id){
         repository.deleteById(id);
