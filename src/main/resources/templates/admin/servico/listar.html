@@ -28,7 +28,10 @@
                                     <td th:text="${servico.valorMinimo}"></td>
                                     <td>
                                         <a class="btn btn-sm btn-warning">Editar</a>
-                                        <a class="btn btn-sm btn-danger">Excluir</a>
+                                        <a class="btn btn-sm btn-danger"
+                                        th:href="@{/admin/servicos/{id}/excluir (id=${servico.id})}"
+                                        onclick="return confirm ('Tem certeza que deseja excluir este servico?')"
+                                        >Excluir c</a>
                                     </td>
                                     
                                 </tr>
