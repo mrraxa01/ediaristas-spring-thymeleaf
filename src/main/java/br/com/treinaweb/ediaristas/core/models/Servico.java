@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -74,8 +76,10 @@ public class Servico {
     @Column(name = "valor_outros",nullable = false)
     private BigDecimal valorOutros;
     
+    @Column(nullable = false, length = 14)
+    @Enumerated(EnumType.STRING)
     private Icone icone;
-    
+    @Column(nullable = false)
     private Integer posicao;
     
     
