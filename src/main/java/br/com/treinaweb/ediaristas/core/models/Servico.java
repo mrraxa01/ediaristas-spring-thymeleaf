@@ -79,6 +79,7 @@ public class Servico {
     @Column(nullable = false, length = 14)
     @Enumerated(EnumType.STRING)
     private Icone icone;
+
     @Column(nullable = false)
     private Integer posicao;
     
