@@ -13,17 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.treinaweb.ediaristas.core.enums.Icone;
-import br.com.treinaweb.ediaristas.core.repositories.ServicoRepository;
 import br.com.treinaweb.ediaristas.web.dtos.ServicoForm;
 import br.com.treinaweb.ediaristas.web.mappers.WebServicoMapper;
+import br.com.treinaweb.ediaristas.web.services.WebServicoService;
 
 @Controller
 @RequestMapping("/admin/servicos")
 public class ServicoController {
 
-
     @Autowired
-    private ServicoRepository repository;
+    private WebServicoService service;
 
     @Autowired
     private WebServicoMapper mapper;
@@ -31,7 +30,7 @@ public class ServicoController {
     @GetMapping
     public ModelAndView buscarTodos(){
         return new ModelAndView("admin/servico/listar")
-        .addObject("servicos", repository.findAll());
+        .addObject("servicos", service.buscarTodos());
     }
 
     @GetMapping("/cadastrar")
@@ -46,7 +45,7 @@ public class ServicoController {
     public String cadastrar(@Valid @ModelAttribute("form") ServicoForm form, BindingResult resultValidation){
         if(resultValidation.hasErrors())
             return "admin/servico/form";
-        repository.save(mapper.toModel(form));
+        service.cadastrar(form);
         return "redirect:/admin/servicos";
     }
 
@@ -55,7 +54,7 @@ public class ServicoController {
 
 
         return new ModelAndView("/admin/servico/form")
-        .addObject("form", mapper.toForm(repository.getReferenceById(id)));
+        .addObject("form", service.buscarPorId(id));
        
     }
 
@@ -68,13 +67,13 @@ public class ServicoController {
         
         var servico = mapper.toModel(form);
         servico.setId(id);
-        repository.save(servico);
+        service.editar(form, id);
         return "redirect:/admin/servicos";
     }
 
     @GetMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id){
-        repository.deleteById(id);
+        service.excluir(id);
         return "redirect:/admin/servicos";
     }
 
