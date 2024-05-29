@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,23 +43,29 @@ public class ServicoController {
     }
 
     @PostMapping("/cadastrar")
-    public String cadastrar(@Valid ServicoForm form){
+    public String cadastrar(@Valid @ModelAttribute("form") ServicoForm form, BindingResult resultValidation){
+        if(resultValidation.hasErrors())
+            return "admin/servico/form";
         repository.save(mapper.toModel(form));
         return "redirect:/admin/servicos";
     }
 
     @GetMapping("/{id}/editar")
     public ModelAndView editar(@PathVariable Long id){
-    var servico = repository.getReferenceById(id);
-    var form = mapper.toForm(servico);
-    System.out.println(form);
+
+
         return new ModelAndView("/admin/servico/form")
         .addObject("form", mapper.toForm(repository.getReferenceById(id)));
        
     }
 
     @PostMapping("/{id}/editar")
-    public String editar(@PathVariable Long id,@Valid ServicoForm form){
+    public String editar(@PathVariable Long id, @Valid @ModelAttribute("form") ServicoForm form,
+     BindingResult resultValidation){
+        
+        if (resultValidation.hasErrors()) 
+            return "admin/servico/form";
+        
         var servico = mapper.toModel(form);
         servico.setId(id);
         repository.save(servico);
