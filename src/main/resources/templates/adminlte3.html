@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><th:block th:include="${title}"> Dashboard </th:block>
+  <title>
+    <th:block th:include="${title}"> Dashboard </th:block>
   </title>
 
   <!-- Google Font: Source Sans Pro -->
@@ -45,6 +46,13 @@
     <div class="content-wrapper">
       <!-- Main content -->
       <section class="content">
+        <div th:if="${alert != null}" class="alert alert-dismissible fade show" th:classappend="${alert.classeCss}"
+          role="alert">
+          <span th:text="${alert.mensagem}"></span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         <div class="container-fluid pt-3" th:include="${content}"></div>
       </section>
       <!-- /.content -->
