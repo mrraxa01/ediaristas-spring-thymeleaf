@@ -19,4 +19,6 @@ public class UsuarioController {
     public ModelAndView findAll(){
         return new ModelAndView("admin/usuarios/listar").addObject("usuarios", service.findAll());
     }
+
+
 }
