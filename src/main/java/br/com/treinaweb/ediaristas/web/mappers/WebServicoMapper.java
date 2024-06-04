@@ -5,15 +5,9 @@ import org.springframework.stereotype.Component;
 import br.com.treinaweb.ediaristas.core.models.Servico;
 import br.com.treinaweb.ediaristas.web.dtos.ServicoForm;
 
-
 @Component
 public class WebServicoMapper {
 
-    
-/*     WebServicoMapper INSTANCE = Mappers.getMapper(WebServicoMapper.class);
-    Servico toModel(ServicoForm form);
-    ServicoForm toForm(Servico model);
- */
     public Servico toModel(ServicoForm servicoForm){
         if (servicoForm == null) 
             throw new IllegalArgumentException("Objeto inválido");
@@ -25,8 +19,7 @@ public class WebServicoMapper {
             servicoForm.getHorasOutros(), servicoForm.getValorOutros(), servicoForm.getIcone(), servicoForm.getPosicao() 
              );
         }   
-    public ServicoForm toForm(Servico servico)
-    {
+    public ServicoForm toForm(Servico servico){
         if (servico==null)
             throw new IllegalArgumentException("Objeto inválido");
         return new ServicoForm(servico.getNome(), servico.getValorMinimo(), servico.getQtdHoras(), servico.getPercentualComissao(), servico.getHorasQuarto(), servico.getValorQuarto(),
