@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.treinaweb.ediaristas.core.enums.TipoUsuario;
+import br.com.treinaweb.ediaristas.core.exceptions.NotFoundObjectException;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
@@ -20,6 +21,12 @@ public class WebUsuarioService {
     @Autowired
     private WebUsuarioMapper mapper;
 
+
+    public Usuario findById(Long id){
+        return repository.findById(id).orElseThrow(
+            ()-> new NotFoundObjectException("Usuário não encontrado!")  );
+    }
+
     public List<Usuario> findAll(){
         return repository.findAll();
     }
@@ -31,5 +38,9 @@ public class WebUsuarioService {
         return repository.save(model);
     }
 
+    public void excluir(Long id){
+       
+        repository.delete(findById(id));
+    }
 
 }
