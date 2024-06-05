@@ -64,4 +64,9 @@ public class UsuarioController {
         return "redirect:/admin/usuarios";
     }
 
+    @GetMapping("/{id}/editar")
+    public ModelAndView editar(@PathVariable Long id){
+        return new ModelAndView("admin/usuarios/edicao-form").addObject("edicaoForm", service.buscarFormPorId(id));
+    }
+
 }

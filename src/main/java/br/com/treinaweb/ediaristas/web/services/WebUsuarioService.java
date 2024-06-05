@@ -10,6 +10,7 @@ import br.com.treinaweb.ediaristas.core.exceptions.NotFoundObjectException;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
+import br.com.treinaweb.ediaristas.web.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.web.mappers.WebUsuarioMapper;
 
 @Service
@@ -41,6 +42,10 @@ public class WebUsuarioService {
     public void excluir(Long id){
        
         repository.delete(findById(id));
+    }
+
+    public UsuarioEdicaoForm buscarFormPorId(Long id){
+             return mapper.toForm(findById(id));
     }
 
 }
