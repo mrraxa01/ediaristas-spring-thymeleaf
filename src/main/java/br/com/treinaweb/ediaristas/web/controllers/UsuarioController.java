@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.web.services.WebUsuarioService;
 
 @Controller
@@ -20,5 +21,9 @@ public class UsuarioController {
         return new ModelAndView("admin/usuarios/listar").addObject("usuarios", service.findAll());
     }
 
+    @GetMapping("/cadastrar")
+    public ModelAndView cadastrar(){
+        return new ModelAndView("admin/usuarios/cadastro-form").addObject("cadastroForm", new UsuarioCadastroForm());
+    }
 
 }
