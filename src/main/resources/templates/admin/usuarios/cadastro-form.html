@@ -31,7 +31,7 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="email">E-mail</label>
-                                        <input type="email" class="form-control" th:field="*{email}">
+                                        <input type="email" class="form-control" autocomplete="off" th:field="*{email}">
                                         <ul>
                                             <li class="text-danger" th:each="error : ${#fields.errors('email')}"
                                             th:text="${error}"></li>

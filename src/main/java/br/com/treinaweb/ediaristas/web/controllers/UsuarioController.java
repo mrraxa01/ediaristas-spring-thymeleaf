@@ -1,11 +1,19 @@
 package br.com.treinaweb.ediaristas.web.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.treinaweb.ediaristas.web.dtos.FlashMessage;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
 import br.com.treinaweb.ediaristas.web.services.WebUsuarioService;
 
@@ -24,6 +32,22 @@ public class UsuarioController {
     @GetMapping("/cadastrar")
     public ModelAndView cadastrar(){
         return new ModelAndView("admin/usuarios/cadastro-form").addObject("cadastroForm", new UsuarioCadastroForm());
+    }
+
+    @PostMapping("/cadastrar")
+    public String cadastrar(
+        @Valid @ModelAttribute("cadastroForm") UsuarioCadastroForm cadastroFormform,
+        BindingResult result,
+        RedirectAttributes attributes
+    ){
+        if (result.hasErrors()) 
+            return "admin/usuarios/cadastro-form";
+        service.cadastrar(cadastroFormform);
+        attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário Cadastrado com Sucesso!"));
+
+        return "redirect:/admin/usuarios";
+            
+        
     }
 
 }
