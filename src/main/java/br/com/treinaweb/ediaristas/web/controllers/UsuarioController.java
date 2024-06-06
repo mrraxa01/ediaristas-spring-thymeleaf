@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.web.dtos.FlashMessage;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
+import br.com.treinaweb.ediaristas.web.dtos.UsuarioEdicaoForm;
 import br.com.treinaweb.ediaristas.web.services.WebUsuarioService;
 
 @Controller
@@ -68,5 +69,19 @@ public class UsuarioController {
     public ModelAndView editar(@PathVariable Long id){
         return new ModelAndView("admin/usuarios/edicao-form").addObject("edicaoForm", service.buscarFormPorId(id));
     }
+    @PostMapping("/{id}/editar")
+    public String editar(
+        @PathVariable Long id,
+        @Valid @ModelAttribute("edicao-form") UsuarioEdicaoForm edicaoForm,
+        BindingResult result,
+        RedirectAttributes attributes
+    ){
+        if (result.hasErrors()) 
+            return "admin/usuario/edicao-form";
+        service.editar(edicaoForm, id);
+        attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "USUÁRIO EDITADO COM SUCESSO!"));
+        return "redirect:/admin/usuarios";
+    }
+
 
 }
