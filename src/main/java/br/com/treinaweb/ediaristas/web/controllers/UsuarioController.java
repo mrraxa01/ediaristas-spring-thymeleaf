@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.treinaweb.ediaristas.core.exceptions.ValidacaoExceptions;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.web.dtos.FlashMessage;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
@@ -50,12 +51,16 @@ public class UsuarioController {
     ){
         if (result.hasErrors()) 
             return "admin/usuarios/cadastro-form";
+        
+        try{
         service.cadastrar(cadastroFormform);
         attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário Cadastrado com Sucesso!"));
-
+        }catch(ValidacaoExceptions exception){
+            result.addError(exception.getFieldErrors());
+            return "admin/usuarios/cadastro-form";    
+        }
         return "redirect:/admin/usuarios";
-            
-        
+                   
     }
 
     @GetMapping("/{id}/excluir")
@@ -72,15 +77,21 @@ public class UsuarioController {
     @PostMapping("/{id}/editar")
     public String editar(
         @PathVariable Long id,
-        @Valid @ModelAttribute("edicao-form") UsuarioEdicaoForm edicaoForm,
+        @Valid @ModelAttribute("edicaoForm") UsuarioEdicaoForm edicaoForm,
         BindingResult result,
         RedirectAttributes attributes
     ){
         if (result.hasErrors()) 
-            return "admin/usuario/edicao-form";
-        service.editar(edicaoForm, id);
-        attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "USUÁRIO EDITADO COM SUCESSO!"));
-        return "redirect:/admin/usuarios";
+            return "admin/usuarios/edicao-form";
+        try{
+            service.editar(edicaoForm, id);
+            attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "USUÁRIO EDITADO COM SUCESSO!"));
+        }catch(ValidacaoExceptions exception){
+            result.addError(exception.getFieldErrors());
+            System.out.println(exception.getMessage() + exception.getCause() + "fields" + exception.getFieldErrors());
+            return "admin/usuarios/edicao-form";    
+        }        
+            return "redirect:/admin/usuarios";
     }
 
 
