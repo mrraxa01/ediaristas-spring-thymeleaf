@@ -8,8 +8,6 @@ import org.springframework.validation.FieldError;
 
 import br.com.treinaweb.ediaristas.core.enums.TipoUsuario;
 import br.com.treinaweb.ediaristas.core.exceptions.NotFoundObjectException;
-import br.com.treinaweb.ediaristas.core.exceptions.PasswordValidationException;
-import br.com.treinaweb.ediaristas.core.exceptions.UsuarioJaCadastradoException;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.core.repositories.UsuarioRepository;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
@@ -36,17 +34,6 @@ public class WebUsuarioService {
     }
 
     public Usuario cadastrar(UsuarioCadastroForm form){
-
-        if(!form.getSenha().equals(form.getConfirmacaoSenha()))
-            throw new PasswordValidationException("Validation Password Error - No Match",
-             new FieldError(form.getClass().getName(),
-              "confirmacaoSenha", 
-              form.getConfirmacaoSenha(),
-               false,
-                null, 
-                null, 
-                "As senhas devem ser iguais"));
-       
        var model = mapper.toModel(form);
        model.setTipoUsuario(TipoUsuario.ADMIN);
        validarCamposUnicos(model);

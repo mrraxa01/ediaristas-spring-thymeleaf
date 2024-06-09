@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.treinaweb.ediaristas.core.exceptions.ValidacaoExceptions;
 import br.com.treinaweb.ediaristas.core.models.Usuario;
 import br.com.treinaweb.ediaristas.web.dtos.FlashMessage;
 import br.com.treinaweb.ediaristas.web.dtos.UsuarioCadastroForm;
@@ -51,14 +50,9 @@ public class UsuarioController {
     ){
         if (result.hasErrors()) 
             return "admin/usuarios/cadastro-form";
-        
-        try{
         service.cadastrar(cadastroFormform);
         attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário Cadastrado com Sucesso!"));
-        }catch(ValidacaoExceptions exception){
-            result.addError(exception.getFieldErrors());
-            return "admin/usuarios/cadastro-form";    
-        }
+
         return "redirect:/admin/usuarios";
                    
     }
