@@ -53,10 +53,7 @@ public class WebUsuarioService {
     public Usuario editar(UsuarioEdicaoForm form, Long id){
 
         var usuario = findById(id);
-        System.out.println(usuario.getNomeCompleto());
         var model = mapper.toModel(form);
-        System.out.println(usuario.getNomeCompleto());
-        System.out.println(model.getNomeCompleto());
         model.setId(id);
         model.setSenha(usuario.getSenha());
         model.setTipoUsuario(usuario.getTipoUsuario());
@@ -65,22 +62,19 @@ public class WebUsuarioService {
     }
 
     private void validarCamposUnicos(Usuario usuario){
-        System.out.println(usuario.getNomeCompleto());
-        System.out.println(repository.findByEmail(usuario.getEmail()).get().getEmail());
-        repository.findByEmail(usuario.getEmail()).ifPresent(
-            (user) -> {
-                System.out.println(user.getNomeCompleto());
-                
-                throw new UsuarioJaCadastradoException("Validation User Fail",
-                new FieldError(usuario.getClass().getName(),
-                 "email", 
-                 usuario.getEmail(),
-                  false,
-                   null, 
-                   null, 
-                   "Usuário Já existe"));
-            }
-        );
+        
+        if (repository.isEmailJaCadastrado(usuario.getEmail(), usuario.getId())){
+            
+            throw new UsuarioJaCadastradoException("Validation User Fail",
+            new FieldError(usuario.getClass().getName(),
+             "email", 
+             usuario.getEmail(),
+              false,
+               null, 
+               null, 
+               "Usuário Já existe"));
+               
+                    }
     }
 
 }

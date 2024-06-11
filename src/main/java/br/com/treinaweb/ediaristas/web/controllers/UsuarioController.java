@@ -49,10 +49,17 @@ public class UsuarioController {
         BindingResult result,
         RedirectAttributes attributes
     ){
+        System.out.println("result = "+result.hasErrors() );
         if (result.hasErrors()) 
             return "admin/usuarios/cadastro-form";
-        service.cadastrar(cadastroFormform);
-        attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário Cadastrado com Sucesso!"));
+        try{
+            service.cadastrar(cadastroFormform);
+            attributes.addFlashAttribute("alert", new FlashMessage("alert-success", "Usuário Cadastrado com Sucesso!"));
+
+        }catch(ValidacaoExceptions e){
+            result.addError(e.getFieldErrors());
+            return "admin/usuarios/cadastro-form";
+        }
 
         return "redirect:/admin/usuarios";
                    
