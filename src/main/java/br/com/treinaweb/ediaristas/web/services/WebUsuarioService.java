@@ -3,9 +3,11 @@ package br.com.treinaweb.ediaristas.web.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
+import br.com.treinaweb.ediaristas.config.PasswordEncoderConfig;
 import br.com.treinaweb.ediaristas.core.enums.TipoUsuario;
 import br.com.treinaweb.ediaristas.core.exceptions.NotFoundObjectException;
 import br.com.treinaweb.ediaristas.core.exceptions.UsuarioJaCadastradoException;
@@ -24,6 +26,8 @@ public class WebUsuarioService {
     @Autowired
     private WebUsuarioMapper mapper;
 
+    @Autowired
+    private PasswordEncoderConfig passwordEncoderConfig;
 
     public Usuario findById(Long id){
         return repository.findById(id).orElseThrow(
@@ -36,6 +40,7 @@ public class WebUsuarioService {
 
     public Usuario cadastrar(UsuarioCadastroForm form){
        var model = mapper.toModel(form);
+       model.setSenha(passwordEncoderConfig.passwordEncoder().encode(model.getSenha()));
        model.setTipoUsuario(TipoUsuario.ADMIN);
        validarCamposUnicos(model);
        return repository.save(model);
